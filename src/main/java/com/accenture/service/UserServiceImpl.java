@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
     } catch (ParseException | IOException e) {
       e.printStackTrace();
     }
-    return UserPaidResponse.builder().paidAmount(paidAmount).build();
+    return new UserPaidResponse(name, paidAmount);
   }
 
 }
