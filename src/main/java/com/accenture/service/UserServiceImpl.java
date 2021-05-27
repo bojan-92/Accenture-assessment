@@ -28,8 +28,8 @@ public class UserServiceImpl implements UserService {
     HashSet<UserPaidResponse> userPaidResponses = new HashSet<>();
     for (Object o : payments) {
       JSONObject paymentJson = (JSONObject) o;
-      String name = (String) paymentJson.get("user");
-      userPaidResponses.add(getUserPaidAmount(name));
+      String user = (String) paymentJson.get("user");
+      userPaidResponses.add(getUserPaidAmount(user));
     }
     return userPaidResponses;
   }
@@ -37,42 +37,42 @@ public class UserServiceImpl implements UserService {
   @Override
   public HashSet<UserOwesResponse> getUsersOwesAmount() {
     // I get names from orders, theoretically it's possible to have specific user record in "orders" but not in "payments"
-    HashSet<String> userNames = getUserNamesFromOrders();
+    HashSet<String> users = getUsersFromOrders();
     HashSet<UserOwesResponse> usersOwes = new HashSet<>();
-    for (String name : userNames) {
-      usersOwes.add(getUserOwesAmount(name));
+    for (String user : users) {
+      usersOwes.add(getUserOwesAmount(user));
     }
     return usersOwes;
   }
 
   @Override
-  public UserPaidResponse getUserPaidAmount(String name) {
-    return new UserPaidResponse(name, calculatePaidAmountForUser(name));
+  public UserPaidResponse getUserPaidAmount(String user) {
+    return new UserPaidResponse(user, calculatePaidAmountForUser(user));
   }
 
   @Override
-  public UserOwesResponse getUserOwesAmount(String name) {
-    return new UserOwesResponse(name, calculateOwesAmountForUser(name));
+  public UserOwesResponse getUserOwesAmount(String user) {
+    return new UserOwesResponse(user, calculateOwesAmountForUser(user));
   }
 
-  private HashSet<String> getUserNamesFromOrders() {
+  private HashSet<String> getUsersFromOrders() {
     JSONArray orders = readDataFromJsonFile(ORDERS_FILE_PATH);
-    HashSet<String> userNames = new HashSet<>();
+    HashSet<String> users = new HashSet<>();
     for (Object o : orders) {
       JSONObject orderJson = (JSONObject) o;
-      userNames.add((String) orderJson.get("user"));
+      users.add((String) orderJson.get("user"));
     }
-    return userNames;
+    return users;
   }
 
-  private long calculatePaidAmountForUser(String name) {
+  private long calculatePaidAmountForUser(String user) {
     JSONArray payments = readDataFromJsonFile(PAYMENTS_FILE_PATH);
     long paidAmount = 0;
     // Counter for error check, added in order to avoid multiple iteration through "payments"
     int j = 0;
     for (Object o : payments) {
       JSONObject paymentJson = (JSONObject) o;
-      if (paymentJson.get("user").equals(name)) {
+      if (paymentJson.get("user").equals(user)) {
         paidAmount += (Long) paymentJson.get("amount");
         j += 1;
       }
@@ -80,32 +80,32 @@ public class UserServiceImpl implements UserService {
     // In this case paidAmount==0 can be used for this checking,
     // but theoretically it's possible to store "amount":0 for existing user in "payments"
     if (j == 0) {
-      throw new UserNotFoundException("User with name: " + "'" + name + "'" + " doesn't exist.");
+      throw new UserNotFoundException("User with name: " + "'" + user + "'" + " doesn't exist.");
     }
     return paidAmount;
   }
 
-  private double calculateOwesAmountForUser(String name) {
-    List<Order> orders = getUserOrders(name);
+  private double calculateOwesAmountForUser(String user) {
+    List<Order> orders = getUserOrders(user);
     double userSpendTotal = getUserSpendTotal(orders);
-    return userSpendTotal - calculatePaidAmountForUser(name);
+    return userSpendTotal - calculatePaidAmountForUser(user);
   }
 
-  private List<Order> getUserOrders(String name) {
+  private List<Order> getUserOrders(String user) {
     JSONArray orders = readDataFromJsonFile(ORDERS_FILE_PATH);
     List<Order> orderList = new ArrayList<>();
 
     for (Object o : orders) {
       JSONObject orderJson = (JSONObject) o;
-      String user = (String) orderJson.get("user");
+      String userJson = (String) orderJson.get("user");
       String drink = (String) orderJson.get("drink");
       String size = (String) orderJson.get("size");
-      if (user.equals(name)) {
+      if (userJson.equals(user)) {
         orderList.add(Order.builder().user(user).drink(drink).size(size).build());
       }
     }
     if (orderList.size() == 0) {
-      throw new UserNotFoundException("User with name: " + "'" + name + "'" + " doesn't have any order.");
+      throw new UserNotFoundException("User with name: " + "'" + user + "'" + " doesn't have any order.");
     }
     return orderList;
   }
