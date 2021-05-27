@@ -20,7 +20,7 @@ Steps to run application in local environment
  - Click run next to the class signature
  - You need to have Postman or some other REST Api client tool in order to try application
  
-Alternatively you can use the Spring Boot Maven plugin like so:
+Alternatively you can run it from console, use the Spring Boot Maven plugin like so:
  `mvn spring-boot:run`
  
  
