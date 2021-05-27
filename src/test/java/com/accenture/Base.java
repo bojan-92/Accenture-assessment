@@ -1,9 +1,6 @@
 package com.accenture;
 
 import io.restassured.builder.RequestSpecBuilder;
-import io.restassured.specification.RequestSpecification;
-import java.util.HashMap;
-import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -20,16 +17,6 @@ public class Base {
   public void beforeEachCleanup() {
     builder = new RequestSpecBuilder();
     builder.setBaseUri(BASE_URL);
-  }
-
-  public RequestSpecification getRequestSpecification() {
-    return builder.build().pathParams(new HashMap<>());
-  }
-
-  public RequestSpecification getRequestSpecification(String name) {
-    Map<String, String> headers = new HashMap<>();
-    headers.put("name", name);
-    return getRequestSpecification().headers(headers);
   }
 
 }

@@ -1,6 +1,5 @@
 package com.accenture.api;
 
-import com.accenture.api.dto.UserPaidResponse;
 import com.accenture.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,7 +28,7 @@ public class UserController {
   }
 
   @GetMapping(value = "/paid/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<UserPaidResponse> getUserPaidAmount(@PathVariable("name") String name) {
+  public ResponseEntity<?> getUserPaidAmount(@PathVariable("name") String name) {
     return new ResponseEntity<>(userService.getUserPaidAmount(name), HttpStatus.OK);
   }
 
