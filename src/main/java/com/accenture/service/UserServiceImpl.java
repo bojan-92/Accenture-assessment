@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public HashSet<UserOwesResponse> getUsersOwesAmount() {
     // I get names from orders, theoretically it's possible to have specific user record in "orders" but not in "payments"
-    HashSet<String> userNames = getUserNamesFromOrders(readDataFromJsonFile(ORDERS_FILE_PATH));
+    HashSet<String> userNames = getUserNamesFromOrders();
     HashSet<UserOwesResponse> usersOwes = new HashSet<>();
     for (String name : userNames) {
       usersOwes.add(getUserOwesAmount(name));
@@ -55,7 +55,8 @@ public class UserServiceImpl implements UserService {
     return new UserOwesResponse(name, calculateOwesAmountForUser(name));
   }
 
-  private HashSet<String> getUserNamesFromOrders(JSONArray orders) {
+  private HashSet<String> getUserNamesFromOrders() {
+    JSONArray orders = readDataFromJsonFile(ORDERS_FILE_PATH);
     HashSet<String> userNames = new HashSet<>();
     for (Object o : orders) {
       JSONObject orderJson = (JSONObject) o;
