@@ -11,7 +11,6 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-import java.util.List;
 
 @Configuration
 @EnableSwagger2
@@ -24,30 +23,13 @@ public class SwaggerConfig {
         .apis( RequestHandlerSelectors.basePackage( "com.accenture.api" ) )
         .paths(PathSelectors.any())
         .build()
-        .securityContexts(Lists.newArrayList(securityContext()))
         .apiInfo(apiInfo());
   }
 
-  @Bean
-  SecurityContext securityContext() {
-    return SecurityContext.builder()
-        .forPaths(PathSelectors.any())
-        .build();
-  }
-
-//  List<SecurityReference> defaultAuth() {
-//    AuthorizationScope authorizationScope
-//        = new AuthorizationScope("global", "accessEverything");
-//    AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
-//    authorizationScopes[0] = authorizationScope;
-//    return Lists.newArrayList(
-//        new SecurityReference("JWT", authorizationScopes));
-//  }
-
   private ApiInfo apiInfo() {
     return new ApiInfoBuilder()
-        .title("Spring Boot REST API")
-        .description("Payments Api")
+        .title("Accenture REST API")
+        .description("User Api")
         .termsOfServiceUrl("localhost")
         .version("1.0")
         .contact(new Contact("Bojan Trifkovic", "", "bojantrifkovic92@gmail.com"))

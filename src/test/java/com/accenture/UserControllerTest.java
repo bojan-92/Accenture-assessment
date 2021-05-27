@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 class UserControllerTest extends Base {
 
-  private static final String USER_BASE_ENDPOINT = "/user";
+  private static final String USER_BASE_ENDPOINT = "/users";
   private static final String PAID_AMOUNT_ENDPOINT = USER_BASE_ENDPOINT + "/paid-amount";
 
   @Test
@@ -26,7 +26,7 @@ class UserControllerTest extends Base {
         .body()
         .as(UserPaidResponse.class);
 
-    Assertions.assertEquals(112, response.getPaidAmount());
+    Assertions.assertEquals(112, response.getPaid());
   }
 
   @Test

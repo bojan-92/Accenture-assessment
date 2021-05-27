@@ -23,7 +23,7 @@ public class Base {
   }
 
   public RequestSpecification getRequestSpecification() {
-    return builder.build().headers(new HashMap<>());
+    return builder.build().pathParams(new HashMap<>());
   }
 
   public RequestSpecification getRequestSpecification(String name) {
