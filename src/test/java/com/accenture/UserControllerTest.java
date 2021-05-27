@@ -26,7 +26,7 @@ class UserControllerTest extends Base {
         .body()
         .as(UserPaidResponse.class);
 
-    Assertions.assertNotNull(response);
+    Assertions.assertEquals(112, response.getPaidAmount());
   }
 
   @Test
